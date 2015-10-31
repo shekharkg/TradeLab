@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingBottom="@dimen/activity_horizontal_margin">
+
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+      android:id="@+id/cancelImage"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_alignParentRight="true"
+      android:padding="8dp"
+      android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+  </RelativeLayout>
+
+  <RadioGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:checkedButton="@+id/radioSell"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:weightSum="2">
+
+    <RadioButton
+      android:id="@+id/radioSell"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="Sell"
+      android:textSize="22sp"
+      android:textStyle="bold"/>
+
+    <RadioButton
+      android:id="@+id/radioBuy"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="Buy"
+      android:textSize="22sp"
+      android:textStyle="bold"/>
+
+  </RadioGroup>
+
+  <com.iangclifton.android.floatlabel.FloatLabel
+    android:id="@+id/quantity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:hint="Quantity"
+    android:inputType="number"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:singleLine="true"
+    android:text="1"/>
+
+  <com.iangclifton.android.floatlabel.FloatLabel
+    android:id="@+id/amount"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/activity_horizontal_margin"
+    android:hint="Amount"
+    android:inputType="number"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:singleLine="true"
+    android:text="1"/>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="2">
+
+    <Button
+      android:id="@+id/delete"
+      style="?android:attr/buttonStyleSmall"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/activity_horizontal_margin"
+      android:layout_weight="1"
+      android:background="@drawable/custom_button_click"
+      android:paddingLeft="@dimen/activity_vertical_margin"
+      android:paddingRight="@dimen/activity_vertical_margin"
+      android:text="Delete"
+      android:textAllCaps="false"
+      android:textColor="@android:color/white"
+      android:textSize="20sp"
+      android:textStyle="bold"/>
+
+    <Button
+      android:id="@+id/confirm"
+      style="?android:attr/buttonStyleSmall"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/activity_horizontal_margin"
+      android:layout_weight="1"
+      android:background="@drawable/custom_button_click"
+      android:paddingLeft="@dimen/activity_vertical_margin"
+      android:paddingRight="@dimen/activity_vertical_margin"
+      android:text="Confirm"
+      android:textAllCaps="false"
+      android:textColor="@android:color/white"
+      android:textSize="20sp"
+      android:textStyle="bold"/>
+  </LinearLayout>
+
+</LinearLayout>

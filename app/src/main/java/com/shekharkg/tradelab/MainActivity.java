@@ -17,7 +17,6 @@ import com.shekharkg.tradelab.db.DataSource;
 import com.shekharkg.tradelab.fragment.AddNewEntryFragment;
 import com.shekharkg.tradelab.fragment.HomeFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity
   private HomeFragment homeFragment;
   private DataSource dataSource;
   private List<DataModel> dataModels;
+  private String[] suggestions;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,14 @@ public class MainActivity extends AppCompatActivity
     searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
       @Override
       public boolean onQueryTextSubmit(String query) {
-        //Do some magic
+        for (DataModel d : dataModels) {
+          if (query.contains(String.valueOf(d.getLtp())) && query.contains(d.getUnderline())) {
+            dataSource.addSelectedData(d);
+            homeFragment.populateData();
+            searchView.closeSearch();
+            return true;
+          }
+        }
         return false;
       }
 
@@ -57,9 +64,9 @@ public class MainActivity extends AppCompatActivity
     searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
       @Override
       public void onSearchViewShown() {
-        String[] suggestions = new String[dataModels.size()];
-        for (int i=0; i<dataModels.size(); i++)
-          suggestions[i] = dataModels.get(i).getUnderline();
+        suggestions = new String[dataModels.size()];
+        for (int i = 0; i < dataModels.size(); i++)
+          suggestions[i] = dataModels.get(i).getUnderline() + " (" + dataModels.get(i).getLtp() + ")";
         searchView.setSuggestions(suggestions);
       }
 

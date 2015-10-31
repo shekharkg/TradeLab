@@ -22,6 +22,7 @@ public class DataSource extends SQLiteOpenHelper {
   private final static String DATABASE_NAME = "dbMapData";
   private final static int DATABASE_VERSION = 1;
   private final static String TABLE_NAME = "tblMapData";
+  private final static String SELECTED_TABLE_NAME = "selectedTblMapData";
 
   /**
    * Different columns of table
@@ -68,13 +69,23 @@ public class DataSource extends SQLiteOpenHelper {
         + UNDERLINE + " TEXT, " + EXPIRY + " TEXT, "
         + TYPE + " TEXT, " + STRIKE + " TEXT, " + LTP + " FLOAT);";
     db.execSQL(CREATE_READER_TABLE);
+
+    String CREATE_SELECTED_TABLE = "CREATE TABLE IF NOT EXISTS "
+        + SELECTED_TABLE_NAME + " (" + _id
+        + " INTEGER PRIMARY KEY autoincrement, "
+        + EXCHANGE + " TEXT, " + PRODUCT + " TEXT, "
+        + UNDERLINE + " TEXT, " + EXPIRY + " TEXT, "
+        + TYPE + " TEXT, " + STRIKE + " TEXT, " + LTP + " FLOAT);";
+    db.execSQL(CREATE_SELECTED_TABLE);
   }
 
   @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     //Drop table query
     String DROP_READER_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+    String DROP_SELECTED_TABLE = "DROP TABLE IF EXISTS " + SELECTED_TABLE_NAME;
     db.execSQL(DROP_READER_TABLE);
+    db.execSQL(DROP_SELECTED_TABLE);
     onCreate(db);
   }
 
@@ -109,6 +120,48 @@ public class DataSource extends SQLiteOpenHelper {
     cursor.close();
     return mapData;
   }
+
+  /**
+   * Adding an item to selected to table
+   */
+  public long addSelectedData(DataModel dataModel) {
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(EXCHANGE, dataModel.getExchange());
+    contentValues.put(PRODUCT, dataModel.getProduct());
+    contentValues.put(UNDERLINE, dataModel.getUnderline());
+    contentValues.put(EXPIRY, dataModel.getExpiry());
+    contentValues.put(TYPE, dataModel.getType());
+    contentValues.put(STRIKE, dataModel.getStrike());
+    contentValues.put(LTP, dataModel.getLtp());
+    return sqLiteDatabase.insert(SELECTED_TABLE_NAME, null, contentValues);
+  }
+
+  /**
+   * Select all row from table and return as a list of FileModel
+   */
+  public List<DataModel> selectAllSelectedItems() {
+    List<DataModel> mapData = new ArrayList<>();
+    Cursor cursor = sqLiteDatabase.query(SELECTED_TABLE_NAME,
+        new String[]{_id, EXCHANGE, PRODUCT, UNDERLINE, EXPIRY, TYPE, STRIKE, LTP},
+        null, null, null, null, null);
+    while (cursor.moveToNext()) {
+      mapData.add(new DataModel(cursor.getInt(0), cursor.getString(1), cursor.getString(2),
+          cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6),
+          cursor.getFloat(7)));
+    }
+    cursor.close();
+    return mapData;
+  }
+
+  /**
+   * Delete an item from selected database (un subscribe)
+   */
+  public long deleteSelectedData(int id) {
+    return sqLiteDatabase.delete(SELECTED_TABLE_NAME, _id + " = ?",
+        new String[]{String.valueOf(id)});
+  }
+
+
 
 }
 
