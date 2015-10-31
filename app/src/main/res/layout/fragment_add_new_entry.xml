@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Exchange"
+        android:text="NSE"
         android:singleLine="true"/>
 
       <com.iangclifton.android.floatlabel.FloatLabel
@@ -64,7 +65,7 @@
         android:singleLine="true"/>
 
       <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/addButton"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="match_parent"
         android:layout_height="0dp"
