@@ -12,8 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.shekharkg.tradelab.dao.DataModel;
+import com.shekharkg.tradelab.db.DataSource;
 import com.shekharkg.tradelab.fragment.AddNewEntryFragment;
 import com.shekharkg.tradelab.fragment.HomeFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +26,9 @@ public class MainActivity extends AppCompatActivity
   private DrawerLayout drawer;
   private MaterialSearchView searchView;
   private MenuItem item;
+  private HomeFragment homeFragment;
+  private DataSource dataSource;
+  private List<DataModel> dataModels;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +57,10 @@ public class MainActivity extends AppCompatActivity
     searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
       @Override
       public void onSearchViewShown() {
-        //Do some magic
+        String[] suggestions = new String[dataModels.size()];
+        for (int i=0; i<dataModels.size(); i++)
+          suggestions[i] = dataModels.get(i).getUnderline();
+        searchView.setSuggestions(suggestions);
       }
 
       @Override
@@ -66,7 +77,10 @@ public class MainActivity extends AppCompatActivity
 
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
-    getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+    homeFragment = new HomeFragment();
+    dataSource = DataSource.singleton(this);
+    getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+    dataModels = dataSource.selectAll();
   }
 
   @Override
@@ -94,8 +108,9 @@ public class MainActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     int id = item.getItemId();
     if (id == R.id.nav_manage) {
-      transaction.replace(R.id.container, new HomeFragment()).commit();
+      transaction.replace(R.id.container, homeFragment).commit();
       this.item.setVisible(true);
+      dataModels = dataSource.selectAll();
     } else if (id == R.id.add_details) {
       transaction.replace(R.id.container, new AddNewEntryFragment()).commit();
       this.item.setVisible(false);

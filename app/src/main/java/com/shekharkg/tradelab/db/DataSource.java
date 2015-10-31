@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.shekharkg.tradelab.dao.DataModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ShekharKG on 10/31/2015.
@@ -95,8 +96,8 @@ public class DataSource extends SQLiteOpenHelper {
   /**
    * Select all row from table and return as a list of FileModel
    */
-  public ArrayList<DataModel> selectAll() {
-    ArrayList<DataModel> mapData = new ArrayList<>();
+  public List<DataModel> selectAll() {
+    List<DataModel> mapData = new ArrayList<>();
     Cursor cursor = sqLiteDatabase.query(TABLE_NAME,
         new String[]{_id, EXCHANGE, PRODUCT, UNDERLINE, EXPIRY, TYPE, STRIKE, LTP},
         null, null, null, null, null);
