@@ -1,17 +1,17 @@
 package com.shekharkg.tradelab;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.shekharkg.tradelab.fragment.AddNewEntryFragment;
 import com.shekharkg.tradelab.fragment.HomeFragment;
 
@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
   private DrawerLayout drawer;
-  private FloatingActionButton fab;
+  private MaterialSearchView searchView;
+  private MenuItem item;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +31,32 @@ public class MainActivity extends AppCompatActivity
 
     drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-    fab = (FloatingActionButton) findViewById(R.id.fab);
-//    fab.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//            .setAction("Action", null).show();
-//      }
-//    });
+    searchView = (MaterialSearchView) findViewById(R.id.search_view);
+    searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+      @Override
+      public boolean onQueryTextSubmit(String query) {
+        //Do some magic
+        return false;
+      }
+
+      @Override
+      public boolean onQueryTextChange(String newText) {
+        //Do some magic
+        return false;
+      }
+    });
+
+    searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+      @Override
+      public void onSearchViewShown() {
+        //Do some magic
+      }
+
+      @Override
+      public void onSearchViewClosed() {
+        //Do some magic
+      }
+    });
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -49,6 +68,15 @@ public class MainActivity extends AppCompatActivity
     navigationView.setNavigationItemSelectedListener(this);
     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
   }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.main, menu);
+    item = menu.findItem(R.id.action_search);
+    searchView.setMenuItem(item);
+    return true;
+  }
+
 
   @Override
   public void onBackPressed() {
@@ -67,10 +95,11 @@ public class MainActivity extends AppCompatActivity
     int id = item.getItemId();
     if (id == R.id.nav_manage) {
       transaction.replace(R.id.container, new HomeFragment()).commit();
-      fab.setVisibility(View.VISIBLE);
+      this.item.setVisible(true);
     } else if (id == R.id.add_details) {
       transaction.replace(R.id.container, new AddNewEntryFragment()).commit();
-      fab.setVisibility(View.GONE);
+      this.item.setVisible(false);
+      searchView.closeSearch();
     }
     drawer.closeDrawer(GravityCompat.START);
     return true;
