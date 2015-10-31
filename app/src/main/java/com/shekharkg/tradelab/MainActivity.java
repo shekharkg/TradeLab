@@ -3,6 +3,7 @@ package com.shekharkg.tradelab;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,13 +11,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+
+import com.shekharkg.tradelab.fragment.AddNewEntryFragment;
+import com.shekharkg.tradelab.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
   private DrawerLayout drawer;
+  private FloatingActionButton fab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +31,14 @@ public class MainActivity extends AppCompatActivity
 
     drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
-      }
-    });
+    fab = (FloatingActionButton) findViewById(R.id.fab);
+//    fab.setOnClickListener(new View.OnClickListener() {
+//      @Override
+//      public void onClick(View view) {
+//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//            .setAction("Action", null).show();
+//      }
+//    });
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,13 +84,15 @@ public class MainActivity extends AppCompatActivity
 
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
+    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
     // Handle navigation view item clicks here.
     int id = item.getItemId();
-
     if (id == R.id.nav_manage) {
-
+      transaction.replace(R.id.container, new HomeFragment()).commit();
+      fab.setVisibility(View.VISIBLE);
     } else if (id == R.id.add_details) {
-
+      transaction.replace(R.id.container, new AddNewEntryFragment()).commit();
+      fab.setVisibility(View.GONE);
     }
     drawer.closeDrawer(GravityCompat.START);
     return true;
