@@ -59,6 +59,7 @@
 
       <com.iangclifton.android.floatlabel.FloatLabel
         android:id="@+id/lta"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="LTA"
